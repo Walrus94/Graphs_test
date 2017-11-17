@@ -41,19 +41,24 @@ public class Solution {
         }
 
         public int[] shortestReach(int startId) { // 0 indexed
-            int[] distances = new int[verticies.length - 1];
+            int[] distances = new int[verticies.length];
+            boolean[] visited = new boolean[verticies.length];
+
             for (int i = 0; i < distances.length; i++) {
                 distances[i] = -1;
             }
             distances[startId] = 0;
             Queue<Vertex> q = new LinkedList<>();
             q.add(verticies[startId]);
+            visited[startId] = true;
             while (!q.isEmpty()) {
                 Vertex currentVertex = q.remove();
                 currentVertex.adj.forEach(v -> {
-                    q.add(v);
-                    distances[v.index] = distances[currentVertex.index] + 6;
-
+                    if (!visited[v.index]) {
+                        q.add(v);
+                        visited[v.index] = true;
+                        distances[v.index] = distances[currentVertex.index] + 6;
+                    }
                 });
             }
 
